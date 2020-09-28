@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include "Framebuffer.h"
 
+#ifdef _WIN32
+#include <conio.h>
+#else
+#include <stdio.h>
+#define clrscr() printf("\e[1;1H\e[2J")
+#endif
+
 struct Framebuffer
 {
     char *buffer;
@@ -46,7 +53,8 @@ void destroyFrameBuffer(Framebuffer *buffer) {
 }
 
 void render(Framebuffer *buffer) {
-    printf("\x1b[H");
+    clrscr();
+
     for (int i = 0; i < buffer->width * buffer->height; i++) {
         if (i % buffer->width == 0){
             putchar(10);
